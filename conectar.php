@@ -1,7 +1,10 @@
 <?php
-	function conectar () {
-		$conexion = mysql_connect("localhost", "root", "");
-		mysql_select_db("frigorifico", $conexion);
-		mysql_query("SET NAMES 'utf8'");
-	}
+
+function conectar(){
+
+	// Conectando y seleccionando la base de datos
+	$conexion = mysqli_connect("localhost", "root", "") or die('No se pudo conectar: ' . mysql_error());
+	mysqli_select_db($conexion, "frigorifico");
+	return $conexion;
+}
 ?>

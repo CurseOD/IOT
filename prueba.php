@@ -1,44 +1,32 @@
 <?php
 
-require_once ('conectar.php');
-conectar();
+function tem () {
 
-/*
-$resultado = mysql_query("SELECT serie, temperatura FROM datos"); 
-if (!$resultado) {
-    echo 'No se pudo ejecutar la consulta: ' . mysql_error();
-    exit;
+	require_once ('conectar.php');
+	$conexion = conectar();
+    $result=mysqli_query($conexion, "SELECT temperatura FROM datos");
+
+	//echo "<table>\n";
+	while ($line = mysqli_fetch_array($result, MYSQLI_NUM)) {
+	    //echo "\t<tr>\n";
+	    
+	    foreach ($line as $col_value) {
+
+	        //echo "\t\t<td>$col_value</td>\n";
+	        echo $col_value;
+	        echo ",";
+	    }
+	    
+	    //echo "\t</tr>\n";
+	}
+	//echo "</table>\n";
+    // Liberar resultados
+	mysqli_free_result($result);
+
+	// Cerrar la conexión
+	mysqli_close($conexion);
 }
-$fila = mysql_fetch_row($resultado);
 
-echo $fila[0]; // 42
-echo $fila[1]; // el valor de email
-
-function temperatura_diaria () {
-        $resultado=mysql_query("SELECT temperatura FROM datos ");
-
-        while ($row=mysql_fetch_array($resultado)){
-            echo "[";
-            echo $row[0]*1000;
-            echo ",";
-            echo $row[1];
-            echo "],";
-            for ($x=0;$x<$intervalo;$x++){
-                $row=mysql_fetch_array($resultado);
-            }
-        }
-        mysql_close();
-    }
-*/
-function tem(){
-	$resultado = mysql_query("SELECT temperatura FROM datos");
-
-	while ($row=mysql_fetch_array($resultado)){
-        echo $row[0];
-        $nuevo = $row;
-    }
-}
-tem();
 ?>
 
 <!DOCTYPE html>
@@ -76,7 +64,7 @@ tem();
 	        },
 	        series: [{
 	            name: 'China',
-	            data: [2]
+	            data: [<?php tem();?>]
 	        }, {
 	            name: 'Korea',
 	            data: [3.9, 4.2, 5.7, 8.5, 11.9, 15.2, 17.0, 16.6, 14.2, 10.3, 6.6, 4.8]
