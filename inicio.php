@@ -5,7 +5,7 @@
 	<title>Nuevo</title>
 </head>
 <body>
-	<form name="formulario" action="ingreso.php" method="post">
+	<form name="formulario" action="ingreso.php" method="POST">
 		Serie:<br>
 		<input type="text" name="serie"><br>
 		Temperatura:<br>
