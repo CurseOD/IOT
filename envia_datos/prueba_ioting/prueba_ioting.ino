@@ -3,8 +3,8 @@
 const char* ssid = "Arial";
 const char* pass = "yes09081984";
 
-int a=1, b=50, c=100;
-bool flag_a, flag_b, flag_c;
+byte host[] = {192,168,0,6};
+int port = 81;
 
 WiFiClient client;
 
@@ -45,9 +45,9 @@ void loop() {
 
 	delay(2000);
 
-	if (client.connect("http://192.168.0.6", 81) > 0){
+	if (client.connect(host, port) > 0){
 		Serial.println("# Conectado.");
 	}else{
-		Serial.println("Aún no conecta.....");
+		Serial.println("No conecta.....");
 	}
 }

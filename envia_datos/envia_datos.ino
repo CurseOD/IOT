@@ -1,11 +1,13 @@
 
-
 #include <ESP8266WiFi.h>
+
 const char* ssid     = "Arial";
 const char* password = "yes09081984";
 
-IPAddress host (192,168,0,6);
+byte host[] = {192,168,0,6};
+int port = 81;
 
+WiFiClient client;
 
 void setup() {
 	Serial.begin(115200);
@@ -16,21 +18,15 @@ void setup() {
 	Serial.println();
 	Serial.println();
 	Serial.print("Tratando de conectar en ");
-  Serial.println(ssid);
-  Serial.print("Con clave: ");
-  Serial.println(password);
+	Serial.println(ssid);
+	Serial.print("Con clave: ");
+	Serial.println(password);
 
 	WiFi.begin(ssid, password);
- 
-  int su =0;
+
 	while (WiFi.status() != WL_CONNECTED) {
 		delay(500);
 		Serial.print(".");
-    	su++;
-	    if (su==5){
-	      Serial.println("No se puede conectar \n");
-	      su=0;
-	    }
 	}
 
 	Serial.println("");
@@ -41,20 +37,20 @@ void setup() {
 
 void loop() {
 
-	delay(2000);
+	delay(3000);
 
 	// Creamos una instancia de WIFICLIENT 
-	WiFiClient client;
+	Serial.print("Conectado a: ");
+	Serial.println(host);
 
-	const int httpPort = 81;
 
-	if (!client.connect(host, httpPort)) {
+	if (!client.connect(host, port)) {
 		Serial.println("Sin Conexion");
 		return;
 	}
 
 	// Creamos la dirección para luego usarla en el String del POST que tendremos que enviar
-	String url = "http://192.168.0.6:81/IOT/ingreso.php";
+	String url = "http://192.168.0.6/IOT/ingreso.php";
 	// creo un string con los datos que enviaré por POST lo creo de antemano para luego poder 
 	//calcular el tamaño del string dato que necesitare para enviar por post
 	String data = "serie=777&temp=33";
@@ -63,15 +59,13 @@ void loop() {
 	Serial.print("Enviando como: ");
 	Serial.println(url + data);
 
-	// Esta es la solicitud del tipoPOST que enviaremos al servidor
-	client.print(String("POST ") + url + " HTTP/1.0\r\n" +
-		"Host: 192.168.0.6\r\n" +
+	  // Esta es la solicitud del tipoPOST que enviaremos al servidor
+	client.print(String("POST " + url + " HTTP/1.0\r\n" +
+		"Host: " + host + "\r\n" +
 		"Accept: *" + "/" + "*\r\n" +
 		"Content-Length: " + data.length() + "\r\n" +
 		"Content-Type: application/x-www-form-urlencoded\r\n" +
-		"\r\n" + data);
-
-	Serial.println(client.status());
+		"\r\n" + data));
 	delay(10);
 
 	// Leemos todas las lineas que nos responde el servidor y las imprimimos por pantalla, 
