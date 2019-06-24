@@ -7,8 +7,8 @@
 MDNSResponder mdns;
 
 // Replace with your network credentials
-const char* ssid = "Arial";
-const char* password = "yes09081984";
+const char* ssid = "********";
+const char* password = "********";
 
 ESP8266WebServer server(80);
 
